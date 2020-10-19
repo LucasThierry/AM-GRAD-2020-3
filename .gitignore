@@ -123,3 +123,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+SVM/.vscode/settings.json
+SVM/.vs/slnx.sqlite
