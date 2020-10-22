@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     cv = RepeatedKFold(n_splits=5, n_repeats=10, random_state=1453)
 
-    classifier = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1)
+    classifier = MLPClassifier(solver='adam', activation='relu', alpha=1e-5, hidden_layer_sizes=(5, 2), learning_rate_init=0.001, max_iter=200, random_state=1)
 
     scores = cross_val_score(classifier, pandas_attribute_names, pandas_attributes.values.ravel(), scoring='accuracy', cv=cv)
     print_results(scores)
