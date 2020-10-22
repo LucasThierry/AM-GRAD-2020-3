@@ -15,8 +15,8 @@ Project for the 2020.3 Machine Learning Course of the Federal University of Pern
 
 ## Roles
 
-- Developer: [Rafa Prado]([mjdo@cin.ufpe.br](https://github.com/prado-rafa))
-- Developer: [Lucas Aurelio]([lagc@cin.ufpe.br](https://github.com/lucas625))
+- Developer: [Rafa Prado](https://github.com/prado-rafa)
+- Developer: [Lucas Aurelio](https://github.com/lucas625)
 - Developer: [Lucas Thierry](https://github.com/LucasThierry)
 
 ### Requirements
