@@ -54,5 +54,9 @@ python SVM_Scaler.py
 #### ANN
 
 ```sh
+# Go to ANN folder
+cd ANN
 
+# Run the ANN
+python ANN.py
 ```
