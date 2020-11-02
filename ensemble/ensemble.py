@@ -2,8 +2,10 @@ import os
 import argparse
 
 import pandas
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import BaggingClassifier
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import StackingClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 
@@ -26,9 +28,17 @@ def get_attributes():
     return pandas.read_csv(filepath, names=names)
 
 
-def get_ensemble_grid_parameters():
+def get_tree_ensemble_parameters():
     """
-    Gets the parameters for the grid search testing.
+    Gets the parameters for the grid search testing with tree.
+    :return dict:
+    """
+    return dict()
+
+
+def get_bagging_grid_parameters():
+    """
+    Gets the parameters for the grid search testing with bagging.
     :return dict:
     """
     return dict(
@@ -37,12 +47,24 @@ def get_ensemble_grid_parameters():
         bootstrap=[False, True])
 
 
-def get_knn_ensemble_parameters():
+def get_boosting_grid_parameters():
     """
-    Gets the parameters for the grid search testing.
+    Gets the parameters for the grid search testing with boosting.
     :return dict:
     """
-    return dict()
+    return dict(
+        n_estimators=[5, 25, 100],
+        learning_rate=[0.5, 1, 2])
+
+
+def get_stacking_grid_parameters():
+    """
+    Gets the parameters for the grid search testing with stacking.
+    :return dict:
+    """
+    return dict(
+        stack_method=['auto', 'predict_proba', 'decision_function', 'predict'],
+        passthrough=[False, True])
 
 
 def grid_parameter_estimation(classifier, score, x_train, y_train, grid_parameters):
@@ -74,7 +96,11 @@ def arguments_definition():
     :return ArgumentParser:
     """
     parser = argparse.ArgumentParser(description='Runs the ensemble algorithms.')
-    parser.add_argument('algorithm', type=str, choices=['knn', 'bagging'], help='The algorithm to be executed.')
+    parser.add_argument(
+        'algorithm',
+        type=str,
+        choices=['tree', 'bagging', 'boosting', 'stacking'],
+        help='The algorithm to be executed.')
 
     return parser.parse_args()
 
@@ -88,13 +114,21 @@ def run():
     print(pandas_attribute_names)
     print(pandas_attributes)
 
-    if args.algorithm == 'knn':
-        classifier = KNeighborsClassifier()
-        grid_parameters = get_knn_ensemble_parameters()
+    if args.algorithm == 'tree':
+        classifier = DecisionTreeClassifier()
+        grid_parameters = get_tree_ensemble_parameters()
 
     elif args.algorithm == 'bagging':
-        classifier = BaggingClassifier(KNeighborsClassifier(), max_samples=0.5, max_features=0.5)
-        grid_parameters = get_ensemble_grid_parameters()
+        classifier = BaggingClassifier(DecisionTreeClassifier(), max_samples=0.5, max_features=0.5)
+        grid_parameters = get_bagging_grid_parameters()
+
+    elif args.algorithm == 'boosting':
+        classifier = AdaBoostClassifier(DecisionTreeClassifier())
+        grid_parameters = get_boosting_grid_parameters()
+
+    elif args.algorithm == 'stacking':
+        classifier = StackingClassifier(estimators=[('dt', DecisionTreeClassifier())])
+        grid_parameters = get_stacking_grid_parameters()
 
     x_train, x_test, y_train, y_test = train_test_split(
         pandas_attribute_names, pandas_attributes.values.ravel(), test_size=0.5, random_state=0)
