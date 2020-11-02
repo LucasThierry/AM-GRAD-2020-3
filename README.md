@@ -69,5 +69,5 @@ python ANN.py
 cd ensemble
 
 # Run the ensemble
-python ensemble.py
+python ensemble.py -h
 ```

@@ -1,4 +1,5 @@
 import os
+import argparse
 
 import pandas
 from sklearn.ensemble import BaggingClassifier
@@ -11,7 +12,7 @@ def get_attribute_names():
     """
     Gets the names of the attributes of the database.
     """
-    filepath = os.path.join('..','database', 'glass_attributes_processed.csv')
+    filepath = os.path.join('database', 'glass_attributes_processed.csv')
     names = ['RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba','Fe']
     return pandas.read_csv(filepath, names=names)
 
@@ -25,33 +26,37 @@ def get_attributes():
     return pandas.read_csv(filepath, names=names)
 
 
-def get_testing_parameters():
+def get_ensemble_grid_parameters():
     """
-    Gets the parameters for the gridsearch testing.
+    Gets the parameters for the grid search testing.
     :return dict:
     """
-    return dict(n_estimators=[3, 5, 10, 15, 25])
+    return dict(
+        n_estimators=[5, 25, 100],
+        bootstrap_features=[False, True],
+        bootstrap=[False, True])
 
-def print_results(results):
+
+def get_knn_ensemble_parameters():
     """
-    Prints the results.
-    :param Score results:
+    Gets the parameters for the grid search testing.
+    :return dict:
     """
-    print("Accuracy: %.3f (%.3f)" % (results.mean(), results.std()))
+    return dict()
 
 
-def grid_parameter_estimation(classifier, score, x_train, y_train, tuned_parameters):
+def grid_parameter_estimation(classifier, score, x_train, y_train, grid_parameters):
     """
     Parameter estimation using grid search with cross-validation on SciKit-Learn
     :param classifier:
     :param str score:
     :param x_train:
     :param y_train:
-    :param dict tuned_parameters:
+    :param dict grid_parameters:
     """
     print("# Tuning hyper-parameters for {}.\n".format(score))
 
-    clf = GridSearchCV(classifier, tuned_parameters, scoring='%s_macro' % score)
+    clf = GridSearchCV(classifier, grid_parameters, scoring='%s_macro' % score)
     clf.fit(x_train, y_train)
     print("Best parameters set found on development set:\n{}".format(clf.best_params_))
 
@@ -63,24 +68,41 @@ def grid_parameter_estimation(classifier, score, x_train, y_train, tuned_paramet
         print("%0.3f (+/-%0.03f) for %r\n" % (mean, std * 2, params))
 
 
+def arguments_definition():
+    """
+    Method for creating the possible parameters for execution.
+    :return ArgumentParser:
+    """
+    parser = argparse.ArgumentParser(description='Runs the ensemble algorithms.')
+    parser.add_argument('algorithm', type=str, choices=['knn', 'bagging'], help='The algorithm to be executed.')
+
+    return parser.parse_args()
+
+
 def run():
+    args = arguments_definition()
+
     pandas_attribute_names = get_attribute_names()
     pandas_attributes = get_attributes()
 
     print(pandas_attribute_names)
     print(pandas_attributes)
 
-    classifier = BaggingClassifier(KNeighborsClassifier(), max_samples=0.5, max_features=0.5)
+    if args.algorithm == 'knn':
+        classifier = KNeighborsClassifier()
+        grid_parameters = get_knn_ensemble_parameters()
+
+    elif args.algorithm == 'bagging':
+        classifier = BaggingClassifier(KNeighborsClassifier(), max_samples=0.5, max_features=0.5)
+        grid_parameters = get_ensemble_grid_parameters()
 
     x_train, x_test, y_train, y_test = train_test_split(
         pandas_attribute_names, pandas_attributes.values.ravel(), test_size=0.5, random_state=0)
 
-    tuned_parameters = get_testing_parameters()
-
     scores = ['precision', 'recall']
 
     for score in scores:
-        grid_parameter_estimation(classifier, score, x_train, y_train, tuned_parameters)
+        grid_parameter_estimation(classifier, score, x_train, y_train, grid_parameters)
 
 
 if __name__ == '__main__':
