@@ -12,6 +12,7 @@ Project for the 2020.3 Machine Learning Course of the Federal University of Pern
     - [Run](#run)
       - [SVM](#svm)
       - [ANN](#ann)
+      - [Ensemble](#ensemble)
 
 ## Roles
 
@@ -59,4 +60,14 @@ cd ANN
 
 # Run the ANN
 python ANN.py
+```
+
+#### Ensemble
+
+```sh
+# Go to ensemble folder
+cd ensemble
+
+# Run the ensemble
+python ensemble.py -h
 ```
