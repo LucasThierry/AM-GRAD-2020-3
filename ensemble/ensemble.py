@@ -127,7 +127,7 @@ def run():
         grid_parameters = get_boosting_grid_parameters()
 
     elif args.algorithm == 'stacking':
-        classifier = StackingClassifier(estimators=[('dt', DecisionTreeClassifier())])
+        classifier = StackingClassifier(estimators=[('dt', DecisionTreeClassifier())]
         grid_parameters = get_stacking_grid_parameters()
 
     x_train, x_test, y_train, y_test = train_test_split(
