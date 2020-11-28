@@ -67,7 +67,7 @@ def run():
     args = arguments_definition()
 
     pandas_attributes = get_attributes()
-    pandas_classes = get_attributes()
+    pandas_classes = get_classes()
 
     x_train, x_test, y_train, y_test = train_test_split(
         pandas_attributes, pandas_classes.values.ravel(), test_size=0.5, random_state=0)
