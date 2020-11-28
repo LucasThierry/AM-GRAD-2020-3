@@ -9,12 +9,9 @@ from abc import abstractclassmethod
 class AbstractClassifier(ABC):
     """Class for abstract classifier."""
 
-    def __init__(self, x_train, x_test, y_train, y_test, scores):
+    def __init__(self, pandas_bean, scores):
         """
-        :param x_train: pandas x_train.
-        :param x_test: pandas x_test.
-        :param y_train: pandas y_train.
-        :param y_test: pandas y_test.
+        :param PandasBean pandas_bean:
         :param list[str] scores:
         """
         self.x_train = x_train
