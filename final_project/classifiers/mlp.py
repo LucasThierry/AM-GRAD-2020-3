@@ -16,7 +16,7 @@ class MLP(AbstractClassifier):
         skf = StratifiedKFold(n_splits=10)
         classifier = MLPClassifier(solver='adam', activation='relu', alpha=1e-5, hidden_layer_sizes=(5, 2), learning_rate_init=0.001, max_iter=200, random_state=1)
         scores = cross_val_score(classifier, self.x_train, self.y_train, scoring='accuracy', cv=skf)
-        print("Accuracy: %.3f (%.3f)" % (scores.mean(), scores.std()))
+        self._print_scores(scores)
 
     def grid_search(self):
         pass

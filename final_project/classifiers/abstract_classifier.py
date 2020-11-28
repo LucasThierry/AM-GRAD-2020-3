@@ -41,3 +41,11 @@ class AbstractClassifier(ABC):
         :return dict:
         """
         pass
+
+    @staticmethod
+    def _print_scores(scores):
+        """
+        Prints the scores of the classifier.
+        :param cross_val_score scores:
+        """
+        print("Accuracy: %.3f (%.3f)" % (scores.mean(), scores.std()))
