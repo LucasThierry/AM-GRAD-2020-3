@@ -5,27 +5,49 @@ Module for abstract classifier.
 from abc import ABC
 from abc import abstractclassmethod
 
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import StratifiedKFold
+
 
 class AbstractClassifier(ABC):
     """Class for abstract classifier."""
 
     def __init__(self, pandas_bean, scores):
         """
-        :param PandasBean pandas_bean:
+        :param beans.pandas_bean.PandasBean pandas_bean:
         :param list[str] scores:
         """
-        self.x_train = pandas_bean.x_train
-        self.x_test = pandas_bean.x_test
-        self.y_train = pandas_bean.y_train
-        self.y_test = pandas_bean.y_test
-        self.scores = scores
+        self._pandas_bean = pandas_bean
+        self._scores = scores
 
-    @abstractclassmethod
-    def grid_search(self):
+    def grid_search(self, classifier, score):
         """
-        Performs a grid search on the classifier
+        Performs a grid search on the classifier.
+        :param Classifier classifier: the classifier instance.
+        :param str score:
         """
-        pass
+        print("# Tuning hyper-parameters for {}.\n".format(score))
+
+        grid_parameters = self._grid_parameters()
+
+        clf = GridSearchCV(classifier, grid_parameters, scoring='%s_macro' % score)
+        clf.fit(self._pandas_bean.x_train, self._pandas_bean.y_train)
+        print("Best parameters set found on development set:\n{}".format(clf.best_params_))
+
+        print("Grid scores on development set:\n")
+        means = clf.cv_results_['mean_test_score']
+        stds = clf.cv_results_['std_test_score']
+        for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+            print("%0.3f (+/-%0.03f) for %r\n" % (mean, std * 2, params))
+
+    def _build_scores(self, classifier):
+        """
+        Buils the scores:
+        :param classifier: A sklearn classifier.
+        :return cross_val_score:
+        """
+        skf = StratifiedKFold(n_splits=10)
+        return cross_val_score(classifier, self._pandas_bean.x_train, self._pandas_bean.y_train, scoring='accuracy', cv=skf)
 
     @abstractclassmethod
     def evaluate(self):
@@ -35,9 +57,9 @@ class AbstractClassifier(ABC):
         pass
 
     @abstractclassmethod
-    def _get_attributes(self):
+    def _grid_parameters(self):
         """
-        Returns the attributes.
+        Returns the grid parameters.
         :return dict:
         """
         pass
