@@ -26,9 +26,9 @@ def arguments_definition():
         help='The method to be executed.')
     parser.add_argument(
         '--database_path',
-        default=os.path.join('database', 'stratfilter'),
+        default=os.path.join('database'),
         type=str,
-        help='Path to the database (Default is database/stratfilter).')
+        help='Path to the database (Default is database).')
     parser.add_argument(
         '--database_base_name',
         default='aps_failure',

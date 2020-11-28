@@ -2,9 +2,26 @@
 Module for knn classifier.
 """
 
+from sklearn.neighbors import KNeighborsClassifier
+
+
 from classifiers.abstract_classifier import AbstractClassifier
 
 
 class KNN(AbstractClassifier):
     """Class for knn classifier."""
-    pass
+
+    def evaluate(self):
+        """
+        Evaluates the classifier.
+        """
+        classifier = KNeighborsClassifier()
+        scores = self._build_scores(classifier)
+        self._print_scores(scores)
+
+    def _grid_parameters(self):
+        """
+        Returns the grid parameters.
+        :return dict:
+        """
+        dict(n_neighbors=[3, 5, 7], weights=['uniform', 'distance'], algorithm=['auto', 'brute'])
