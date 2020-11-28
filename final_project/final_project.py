@@ -24,6 +24,16 @@ def arguments_definition():
         type=str,
         choices=['evaluate', 'grid_search'],
         help='The method to be executed.')
+    parser.add_argument(
+        '--database_path',
+        default=os.path.join('database', 'stratfilter'),
+        type=str,
+        help='Path to the database (Default is database/stratfilter).')
+    parser.add_argument(
+        '--database_base_name',
+        default='aps_failure',
+        type=str,
+        help='The base name of the database (Default is aps_failure).')
 
     return parser.parse_args()
 
@@ -37,8 +47,8 @@ if __name__ == '__main__':
     algorithm = args.algorithm
     method = args.method
 
-    database_path = os.path.join('database', 'stratfilter')
-    database_base_name = 'aps_failure'
+    database_path = args.database_path
+    database_base_name = args.database_base_name
 
     exectution_manager = ExecutionManager(database_path, database_base_name)
     exectution_manager.run(algorithm, method)
