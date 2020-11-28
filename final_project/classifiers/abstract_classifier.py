@@ -14,10 +14,10 @@ class AbstractClassifier(ABC):
         :param PandasBean pandas_bean:
         :param list[str] scores:
         """
-        self.x_train = x_train
-        self.x_test = x_test
-        self.y_train = y_train
-        self.y_test = y_test
+        self.x_train = pandas_bean.x_train
+        self.x_test = pandas_bean.x_test
+        self.y_train = pandas_bean.y_train
+        self.y_test = pandas_bean.y_test
         self.scores = scores
 
     @abstractclassmethod

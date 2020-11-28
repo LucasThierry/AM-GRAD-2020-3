@@ -37,7 +37,10 @@ class DatabaseManager:
         """
         filepath = os.path.join(self._database_path, '{}_attributes_processed.csv'.format(self._database_base_name))
         names = self.get_attribute_names()
-        return pandas.read_csv(filepath, names=names)
+        dataset = pandas.read_csv(filepath, names=names)
+        modifiedDataset=dataset.fillna(dataset.mean())
+        print(modifiedDataset)
+        return modifiedDataset
 
     def get_classes(self):
         """

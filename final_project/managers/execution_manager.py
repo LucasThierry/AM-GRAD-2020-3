@@ -74,7 +74,7 @@ class ExecutionManager:
             classifier = Ensemble(pandas_bean, scores)
         else:
             raise Exception('Invalid classifier: {}'.format(algorithm))
-        return classifer
+        return classifier
 
     @staticmethod
     def _run_classifier(method, classifier):
