@@ -15,7 +15,7 @@ class KNN(AbstractClassifier):
         """
         Evaluates the classifier.
         """
-        classifier = KNeighborsClassifier()
+        classifier = KNeighborsClassifier(algorithm='auto', n_neighbors='7', weights='distance')
         scores = self._build_scores(classifier)
         self._print_scores(scores)
     
