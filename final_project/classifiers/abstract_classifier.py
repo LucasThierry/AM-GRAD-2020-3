@@ -6,6 +6,7 @@ from abc import ABC
 from abc import abstractclassmethod
 
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import StratifiedKFold
 
 
@@ -19,8 +20,16 @@ class AbstractClassifier(ABC):
         """
         self._pandas_bean = pandas_bean
         self._scores = scores
+    
+    @abstractclassmethod
+    def grid_search(self, scores):
+        """
+        Runs the grid search of the classifier.
+        :param list[str] scores:
+        """
+        pass
 
-    def grid_search(self, classifier, score):
+    def _perform_grid_search(self, classifier, score):
         """
         Performs a grid search on the classifier.
         :param Classifier classifier: the classifier instance.

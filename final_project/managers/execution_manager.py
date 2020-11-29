@@ -86,6 +86,6 @@ class ExecutionManager:
         if method == 'evaluate':
             classifier.evaluate()
         elif method == 'grid_search':
-            classifier.grid_search()
+            classifier.grid_search(['precision'])
         else:
             raise Exception('Invalid method: {}'.format(method))

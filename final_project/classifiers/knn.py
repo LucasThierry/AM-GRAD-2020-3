@@ -18,10 +18,20 @@ class KNN(AbstractClassifier):
         classifier = KNeighborsClassifier()
         scores = self._build_scores(classifier)
         self._print_scores(scores)
+    
+    def grid_search(self, scores):
+        """
+        Runs the grid search of the classifier.
+        :param list[str] scores:
+        """
+        classifier = KNeighborsClassifier()
+        for score in scores:
+            self._perform_grid_search(classifier, score)
+
 
     def _grid_parameters(self):
         """
         Returns the grid parameters.
         :return dict:
         """
-        dict(n_neighbors=[3, 5, 7], weights=['uniform', 'distance'], algorithm=['auto', 'brute'])
+        return dict(n_neighbors=[3, 5, 7], weights=['uniform', 'distance'], algorithm=['auto', 'brute'])
