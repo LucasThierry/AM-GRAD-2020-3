@@ -15,7 +15,7 @@ class KNN(AbstractClassifier):
         """
         Evaluates the classifier.
         """
-        classifier = KNeighborsClassifier(algorithm='auto', n_neighbors='7', weights='distance')
+        classifier = KNeighborsClassifier(algorithm='auto', n_neighbors=10, weights='distance')
         scores = self._build_scores(classifier)
         self._print_scores(scores)
     
@@ -34,4 +34,4 @@ class KNN(AbstractClassifier):
         Returns the grid parameters.
         :return dict:
         """
-        return dict(n_neighbors=[3, 5, 7], weights=['uniform', 'distance'], algorithm=['auto', 'brute'])
+        return dict(n_neighbors=[3, 5, 7, 10, 15], weights=['uniform', 'distance'], algorithm=['auto', 'brute'])
