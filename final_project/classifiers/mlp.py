@@ -19,9 +19,19 @@ class MLP(AbstractClassifier):
         scores = self._build_scores(classifier)
         self._print_scores(scores)
 
+    def grid_search(self, scores):
+        """
+        Runs the grid search of the classifier.
+        :param list[str] scores:
+        """
+        classifier = MLPClassifier(activation='relu', alpha=1e-5, learning_rate_init=0.001, max_iter=200, random_state=1)
+        for score in scores:
+            self._perform_grid_search(classifier, score)
+
+
     def _grid_parameters(self):
         """
         Returns the grid parameters.
         :return dict:
         """
-        pass
+        return dict(solver=['lbfgs', 'sgd', 'adam'], learning_rate=['constant', 'invscaling', 'adaptive'], hidden_layer_sizes=[(5, 2), (10, 4), (20, 2), (50, 6)])
