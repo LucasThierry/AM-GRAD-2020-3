@@ -27,6 +27,14 @@ class Tree(AbstractClassifier):
         for score in scores:
             self._perform_grid_search(classifier, score)
 
+    def build_mat(self):
+        """
+        Builds the confusion matrix.
+        """
+        classifier = DecisionTreeClassifier(max_depth=10, min_samples_leaf=1, splitter='random')
+        mat = self._build_conf(classifier)
+        print(mat)
+
     def _grid_parameters(self):
         """
         Returns the grid parameters.

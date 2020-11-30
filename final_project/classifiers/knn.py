@@ -28,6 +28,14 @@ class KNN(AbstractClassifier):
         for score in scores:
             self._perform_grid_search(classifier, score)
 
+    def build_mat(self):
+        """
+        Builds the confusion matrix.
+        """
+        classifier = KNeighborsClassifier(algorithm='auto', n_neighbors=10, weights='distance')
+        mat = self._build_conf(classifier)
+        print(mat)
+
     def _grid_parameters(self):
         """
         Returns the grid parameters.
