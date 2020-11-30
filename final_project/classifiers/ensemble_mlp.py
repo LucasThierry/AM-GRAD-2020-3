@@ -16,7 +16,7 @@ class EnsembleMLP(AbstractClassifier):
         """
         Evaluates the classifier.
         """
-        classifier = BaggingClassifier(MLPClassifier(solver='adam', activation='relu', alpha=1e-5, hidden_layer_sizes=(10, 4), learning_rate='constant', learning_rate_init=0.001, max_iter=200, random_state=1), max_samples=0.5, max_features=0.5, n_estimators=5, bootstrap=False) 
+        classifier = BaggingClassifier(MLPClassifier(solver='adam', activation='relu', alpha=1e-5, hidden_layer_sizes=(10, 4), learning_rate='constant', learning_rate_init=0.001, max_iter=200, random_state=1), max_samples=0.5, max_features=0.5, n_estimators=5, bootstrap=False)
         scores = self._build_scores(classifier)
         self._print_scores(scores)
 
@@ -28,6 +28,14 @@ class EnsembleMLP(AbstractClassifier):
         classifier = BaggingClassifier(MLPClassifier(solver='adam', activation='relu', alpha=1e-5, hidden_layer_sizes=(10, 4), learning_rate='constant', learning_rate_init=0.001, max_iter=200, random_state=1), max_samples=0.5, max_features=0.5)
         for score in scores:
             self._perform_grid_search(classifier, score)
+
+    def build_mat(self):
+        """
+        Builds the confusion matrix.
+        """
+        classifier = BaggingClassifier(MLPClassifier(solver='adam', activation='relu', alpha=1e-5, hidden_layer_sizes=(10, 4), learning_rate='constant', learning_rate_init=0.001, max_iter=200, random_state=1), max_samples=0.5, max_features=0.5, n_estimators=5, bootstrap=False)
+        mat = self._build_conf(classifier)
+        print(mat)
 
     def _grid_parameters(self):
         """
