@@ -29,6 +29,29 @@ class AbstractClassifier(ABC):
         """
         pass
 
+    @abstractclassmethod
+    def evaluate(self):
+        """
+        Evaluates the classifier.
+        """
+        pass
+
+    @abstractclassmethod
+    def _grid_parameters(self):
+        """
+        Returns the grid parameters.
+        :return dict:
+        """
+        pass
+
+    @staticmethod
+    def _print_scores(scores):
+        """
+        Prints the scores of the classifier.
+        :param cross_val_score scores:
+        """
+        print("Accuracy: %.3f (%.3f)" % (scores.mean(), scores.std()))
+
     def _perform_grid_search(self, classifier, score):
         """
         Performs a grid search on the classifier.
@@ -58,25 +81,3 @@ class AbstractClassifier(ABC):
         skf = StratifiedKFold(n_splits=10)
         return cross_val_score(classifier, self._pandas_bean.x_train, self._pandas_bean.y_train, scoring='accuracy', cv=skf)
 
-    @abstractclassmethod
-    def evaluate(self):
-        """
-        Evaluates the classifier.
-        """
-        pass
-
-    @abstractclassmethod
-    def _grid_parameters(self):
-        """
-        Returns the grid parameters.
-        :return dict:
-        """
-        pass
-
-    @staticmethod
-    def _print_scores(scores):
-        """
-        Prints the scores of the classifier.
-        :param cross_val_score scores:
-        """
-        print("Accuracy: %.3f (%.3f)" % (scores.mean(), scores.std()))
