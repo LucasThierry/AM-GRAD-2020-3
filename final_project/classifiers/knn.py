@@ -28,7 +28,6 @@ class KNN(AbstractClassifier):
         for score in scores:
             self._perform_grid_search(classifier, score)
 
-
     def _grid_parameters(self):
         """
         Returns the grid parameters.
