@@ -87,5 +87,7 @@ class ExecutionManager:
             classifier.evaluate()
         elif method == 'grid_search':
             classifier.grid_search(['precision'])
+        elif method == 'conf_mat':
+            classifier.build_mat()
         else:
             raise Exception('Invalid method: {}'.format(method))
