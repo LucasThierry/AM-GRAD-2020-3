@@ -87,7 +87,8 @@ class AbstractClassifier(ABC):
         """
         Buils the matrix
         """
-        y_pred = cross_val_predict(classifier, self._pandas_bean.x_train, self._pandas_bean.y_train, cv=10)
+        skf = StratifiedKFold(n_splits=10)
+        y_pred = cross_val_predict(classifier, self._pandas_bean.x_train, self._pandas_bean.y_train, cv=skf)
         return confusion_matrix(self._pandas_bean.y_train, y_pred)
         
 
