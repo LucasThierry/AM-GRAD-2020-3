@@ -26,9 +26,9 @@ def arguments_definition():
         help='The method to be executed.')
     parser.add_argument(
         '--database_path',
-        default=os.path.join('database'),
+        default=os.path.join('database', 'split'),
         type=str,
-        help='Path to the database (Default is database).')
+        help='Path to the database (Default is database/split).')
     parser.add_argument(
         '--database_base_name',
         default='aps_failure',
