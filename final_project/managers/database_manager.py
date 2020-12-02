@@ -25,18 +25,18 @@ class DatabaseManager:
         Gets the training set.
         :return tuple:
         """
-        x_train = self._get_attributes('training')
-        x_test = self._get_classes('training')
-        return x_train, x_test
+        training_attributes = self._get_attributes('training')
+        training_classes = self._get_classes('training').values.ravel()
+        return training_attributes, training_classes
 
     def get_test_set(self):
         """
-        Gets the training set.
+        Gets the test set.
         :return tuple:
         """
-        y_train = self._get_attributes('test')
-        y_test = self._get_classes('test')
-        return y_train, y_test
+        test_attributes = self._get_attributes('test')
+        test_classes = self._get_classes('test').values.ravel()
+        return test_attributes, test_classes
 
     def _get_attribute_names(self):
         """

@@ -32,10 +32,10 @@ class ExecutionManager:
         :param str method:
         """
         print('Getting datasets.')
-        pandas_training_set_train, pandas_training_set_test  = self._dabase_manager.get_training_set()
-        pandas_test_set_train, pandas_test_set_test = self._dabase_manager.get_test_set()
+        training_set_attributes, training_set_classes  = self._dabase_manager.get_training_set()
+        test_set_attributes, test_set_classes = self._dabase_manager.get_test_set()
 
-        pandas_bean = self._build_pandas_bean(pandas_training_set_train, pandas_training_set_test, pandas_test_set_train, pandas_test_set_test)
+        pandas_bean = self._build_pandas_bean(training_set_attributes, training_set_classes, test_set_attributes, test_set_classes)
 
         scores = ['precision', 'recall']
 
@@ -44,15 +44,15 @@ class ExecutionManager:
         self._run_classifier(method, classifier)
 
     @staticmethod
-    def _build_pandas_bean(pandas_training_set_train, pandas_training_set_test, pandas_test_set_train, pandas_test_set_test):
+    def _build_pandas_bean(training_set_attributes, training_set_classes, test_set_attributes, test_set_classes):
         """
         Builds the pandas bean.
-        :param pandas_training_set_train:
-        :param pandas_training_set_test:
-        :param pandas_test_set_train:
-        :param pandas_test_set_test:
+        :param training_set_attributes:
+        :param training_set_classes:
+        :param test_set_attributes:
+        :param test_set_classes:
         """
-        return PandasBean(pandas_training_set_train, pandas_training_set_test, pandas_test_set_train, pandas_test_set_test)
+        return PandasBean(training_set_attributes, training_set_classes, test_set_attributes, test_set_classes)
 
     @staticmethod
     def _get_classifier(algorithm, pandas_bean, scores):
@@ -89,7 +89,5 @@ class ExecutionManager:
             classifier.evaluate()
         elif method == 'grid_search':
             classifier.grid_search(['precision'])
-        elif method == 'conf_mat':
-            classifier.build_mat()
         else:
             raise Exception('Invalid method: {}'.format(method))
