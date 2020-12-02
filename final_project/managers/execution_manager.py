@@ -31,26 +31,28 @@ class ExecutionManager:
         :param str algorithm:
         :param str method:
         """
-        pandas_attributes = self._dabase_manager.get_attributes()
-        pandas_classes = self._dabase_manager.get_classes()
+        print('Getting datasets.')
+        pandas_training_set_train, pandas_training_set_test  = self._dabase_manager.get_training_set()
+        pandas_test_set_train, pandas_test_set_test = self._dabase_manager.get_test_set()
 
-        pandas_bean = self._build_pandas_bean(pandas_attributes, pandas_classes)
+        pandas_bean = self._build_pandas_bean(pandas_training_set_train, pandas_training_set_test, pandas_test_set_train, pandas_test_set_test)
 
         scores = ['precision', 'recall']
 
+        print('Running classifier.')
         classifier = self._get_classifier(algorithm, pandas_bean, scores)
         self._run_classifier(method, classifier)
 
     @staticmethod
-    def _build_pandas_bean(pandas_attributes, pandas_classes):
+    def _build_pandas_bean(pandas_training_set_train, pandas_training_set_test, pandas_test_set_train, pandas_test_set_test):
         """
         Builds the pandas bean.
-        :param pandas_attributes:
-        :param pandas_classes:
+        :param pandas_training_set_train:
+        :param pandas_training_set_test:
+        :param pandas_test_set_train:
+        :param pandas_test_set_test:
         """
-        x_train, x_test, y_train, y_test = train_test_split(
-            pandas_attributes, pandas_classes.values.ravel(), test_size=0.5, random_state=0)
-        return PandasBean(x_train, x_test, y_train, y_test)
+        return PandasBean(pandas_training_set_train, pandas_training_set_test, pandas_test_set_train, pandas_test_set_test)
 
     @staticmethod
     def _get_classifier(algorithm, pandas_bean, scores):
