@@ -30,14 +30,6 @@ class RandomForest(AbstractClassifier):
         for score in scores:
             self._perform_grid_search(classifier, score)
 
-    def build_mat(self):
-        """
-        Builds the confusion matrix.
-        """
-        classifier = RandomForestClassifier(max_depth=50,min_samples_leaf=2,min_samples_split=5)
-        mat = self._build_conf(classifier)
-        print(mat)
-
     def _grid_parameters(self):
         """
         Returns the grid parameters.

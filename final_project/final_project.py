@@ -22,7 +22,7 @@ def arguments_definition():
     parser.add_argument(
         'method',
         type=str,
-        choices=['evaluate', 'grid_search','conf_mat'],
+        choices=['evaluate', 'grid_search'],
         help='The method to be executed.')
     parser.add_argument(
         '--database_path',

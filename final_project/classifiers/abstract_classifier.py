@@ -9,6 +9,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 
@@ -66,7 +67,7 @@ class AbstractClassifier(ABC):
         grid_parameters = self._grid_parameters()
 
         clf = GridSearchCV(classifier, grid_parameters, scoring='%s_macro' % score)
-        clf.fit(self._pandas_bean.x_train, self._pandas_bean.y_train)
+        clf.fit(self._pandas_bean.training_attributes, self._pandas_bean.training_classes)
         print("Best parameters set found on development set:\n{}".format(clf.best_params_))
 
         print("Grid scores on development set:\n")
@@ -81,18 +82,11 @@ class AbstractClassifier(ABC):
         :param classifier: A sklearn classifier.
         :return cross_val_score:
         """
-        classifier.fit(self._pandas_bean.x_train, self._pandas_bean.x_test)
-        pred = classifier.predict(self._pandas_bean.y_train)
-        score =  accuracy_score (self._pandas_bean.y_test, pred)
-        return score
-
-    def _build_conf(self, classifier):
-        """
-        Buils the matrix
-        """
-        classifier.fit(self._pandas_bean.x_train, self._pandas_bean.x_test)
-        pred = classifier.predict(self._pandas_bean.y_train)
-        return confusion_matrix(self._pandas_bean.y_test, pred)
+        print('Fitting')
+        classifier.fit(self._pandas_bean.training_attributes, self._pandas_bean.training_classes)
+        print('Predicting')
+        predicted = classifier.predict(self._pandas_bean.test_attributes)
+        generated_confusion_matrix = confusion_matrix(self._pandas_bean.test_classes, predicted)
+        print('Confusion Matrix: \n{}'.format(generated_confusion_matrix))
+        return accuracy_score(self._pandas_bean.test_classes, predicted)
         
-
-

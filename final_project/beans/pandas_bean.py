@@ -5,43 +5,43 @@ Module for pandas bean.
 class PandasBean:
     """Class for pandas bean."""
 
-    def __init__(self, x_train, x_test, y_train, y_test):
+    def __init__(self, training_attributes, training_classes, test_attributes, test_classes):
         """
         Class constructor.
-        :param x_train: pandas x_train.
-        :param x_test: pandas x_test.
-        :param y_train: pandas y_train.
-        :param y_test: pandas y_test.
+        :param training_attributes: pandas training_attributes.
+        :param training_classes: pandas training_classes.
+        :param test_attributes: pandas test_attributes.
+        :param test_classes: pandas test_classes.
         """
-        self._x_train = x_train
-        self._x_test = x_test
-        self._y_train = y_train
-        self._y_test = y_test
+        self._training_attributes = training_attributes
+        self._training_classes = training_classes
+        self._test_attributes = test_attributes
+        self._test_classes = test_classes
 
     @property
-    def x_train(self):
+    def training_attributes(self):
         """
-        Getter for x_train.
+        Getter for training_attributes.
         """
-        return self._x_train
+        return self._training_attributes
 
     @property
-    def x_test(self):
+    def training_classes(self):
         """
-        Getter for x_test.
+        Getter for training_classes.
         """
-        return self._x_test
+        return self._training_classes
 
     @property
-    def y_train(self):
+    def test_attributes(self):
         """
-        Getter for y_train.
+        Getter for test_attributes.
         """
-        return self._y_train
+        return self._test_attributes
 
     @property
-    def y_test(self):
+    def test_classes(self):
         """
-        Getter for y_test.
+        Getter for test_classes.
         """
-        return self._y_test
+        return self._test_classes
