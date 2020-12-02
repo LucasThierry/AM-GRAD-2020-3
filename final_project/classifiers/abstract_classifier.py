@@ -10,6 +10,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_val_predict
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
 
 
 class AbstractClassifier(ABC):
@@ -80,16 +81,18 @@ class AbstractClassifier(ABC):
         :param classifier: A sklearn classifier.
         :return cross_val_score:
         """
-        skf = StratifiedKFold(n_splits=10)
-        return cross_val_score(classifier, self._pandas_bean.x_train, self._pandas_bean.y_train, scoring='accuracy', cv=skf)
+        classifier.fit(self._pandas_bean.x_train, self._pandas_bean.x_test)
+        pred = classifier.predict(self._pandas_bean.y_train)
+        score =  accuracy_score (self._pandas_bean.y_test, pred)
+        return score
 
     def _build_conf(self, classifier):
         """
         Buils the matrix
         """
-        skf = StratifiedKFold(n_splits=10)
-        y_pred = cross_val_predict(classifier, self._pandas_bean.x_train, self._pandas_bean.y_train, cv=skf)
-        return confusion_matrix(self._pandas_bean.y_train, y_pred)
+        classifier.fit(self._pandas_bean.x_train, self._pandas_bean.x_test)
+        pred = classifier.predict(self._pandas_bean.y_train)
+        return confusion_matrix(self._pandas_bean.y_test, pred)
         
 
 
